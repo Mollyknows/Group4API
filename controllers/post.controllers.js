@@ -1,54 +1,29 @@
-const express = require('express')
-    router = express.Router();
+const db = require('../db');
 
-const service = require('../services/post.service')
+//All inputs to mysql are sanitized to prevent sql injection
+//This is done by using prepared statements
+//The mysql2 library supports prepared statements
 
-//http://localhost:3000/api/posts
-router.get('/', async (req, res) => {
-    const posts = await service.getAllPosts();
-    res.send(posts)
-});
+// This function is used to get all the posts from the database
+module.exports.getAllPosts = async () => {
+    const [rows] = await db.query('SELECT * FROM posts')
+    return rows;
+}
 
-//http://localhost:3000/api/posts/id
-router.get('/:id', async (req, res) => {
-    const post = await service.getPostById(req.params.id);
-    if (post == undefined){
-        res.status(404).json('No records found with id: ' + req.params.id);
-    }
-    else{
-    res.send(post);
-    }
-});
+// This function is used to get a post by its id
+module.exports.getPostById = async(id) => {
+    const [[rows]] = await db.query('SELECT * FROM posts WHERE id = ?',[id]); 
+    return rows;
+}
 
-//http://localhost:3000/api/posts/id
-router.delete('/:id', async (req, res) => {
-    const affectedRows = await service.deletePost(req.params.id);
-    console.log('Affected Rows: ' + affectedRows)
-    if (affectedRows == 0){
-        res.status(404).json('No records found with id: ' + req.params.id);
-    }
-    else{
-    res.send('Successfully Removed');
-    }
-});
+// This function is used to delete a post by its id
+module.exports.deletePost = async(id) => {
+    const [{affectedRows}] = await db.query('DELETE FROM posts WHERE id = ?',[id]);
+    return affectedRows;
+}
 
-//http://localhost:3000/api/posts/id
-router.post('/', async (req, res) => {
-    const affectedRows = await service.addOrEditPost(req.body);
-    res.status(201).send('Created Successfully');
-});
-
-//http://localhost:3000/api/posts/id
-router.put('/:id', async (req, res) => {
-    const affectedRows = await service.addOrEditPost(req.body, req.params.id);
-    console.log('Affected Rows: ' + affectedRows)
-    if (affectedRows == 0){
-        res.status(404).json('No records found with id: ' + req.params.id);
-    }
-    else{
-    res.send('Updated Successfully');
-    }
-});
-module.exports = router;
-
-
+// This function is used to add or edit a post
+module.exports.addOrEditPost = async(obj, id = 0) => {
+    const [[[{affectedRows}]]] = await db.query('CALL add_or_edit(?,?,?,?)',[id, obj.name_string, obj.message, obj.post_timestamp]);
+    return affectedRows;
+}
