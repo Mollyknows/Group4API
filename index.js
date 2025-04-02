@@ -5,23 +5,84 @@ const express = require ('express');
 require('express-async-errors');
 
 const db = require ('./db'),
-    postsRoutes = require('./controllers/post.controller');
+    extensionRoutes = require('./controllers/extension.controller');
 
 //middleware
 app.use(bodyParser.json());
-app.use('/api/posts/', postsRoutes);
+app.use('/api', apiRoutes);
 app.use(express.json());
 app.use(express.static('public')); //folder for static files
 
 
-//handles get request from front end
-app.get('/api/posts', (req, res) => { 
-    res.status(200).json();
-});
-app.post('/api/posts', (req, res) => {
-    res.status(200).send(('Updated'))
+// Front-end routes
+
+// Home page
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// Extensions gallery page
+app.get('/gallery', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'gallery.html'));
+});
+
+// Extension detail page
+app.get('/extension/:id', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'extension-detail.html'));
+});
+
+// Upload extension page (requires authentication)
+app.get('/upload', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login?redirect=/upload');
+    }
+res.sendFile(path.join(__dirname, 'public', 'upload.html'));
+});
+
+// Manage extensions page (requires authentication)
+app.get('/manage', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login?redirect=/manage');
+    }
+    
+    res.sendFile(path.join(__dirname, 'public', 'manage.html'));
+});
+
+// Admin dashboard (requires admin authentication)
+app.get('/admin', (req, res) => {
+    if (!req.session.user || !req.session.user.isAdmin) {
+        return res.redirect('/login?redirect=/admin');
+    }
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// Login page
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+// Register page
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'register.html'));
+});
+
+// Documentation page
+app.get('/docs', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'documentation.html'));
+});
+
+// Search page
+app.get('/search', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'search.html'));
+});
+
+// User profile page
+app.get('/profile', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login?redirect=/profile');
+    }
+    res.sendFile(path.join(__dirname, 'public', 'profile.html'));
+});
 
 
 
