@@ -6,6 +6,7 @@ require('express-async-errors');
 
 const db = require ('./db'),
     extensionRoutes = require('./controllers/extension.controller');
+    authRoutes = require('./controllers/auth.controller');
 
 //middleware
 app.use(bodyParser.json());
@@ -44,7 +45,7 @@ app.get('/manage', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login?redirect=/manage');
     }
-    
+
     res.sendFile(path.join(__dirname, 'public', 'manage.html'));
 });
 
