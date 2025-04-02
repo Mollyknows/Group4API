@@ -49,14 +49,6 @@ app.get('/manage', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'manage.html'));
 });
 
-// Admin dashboard (requires admin authentication)
-app.get('/admin', (req, res) => {
-    if (!req.session.user || !req.session.user.isAdmin) {
-        return res.redirect('/login?redirect=/admin');
-    }
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
 // Login page
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'login.html'));
