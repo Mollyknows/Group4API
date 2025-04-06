@@ -1,10 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="style.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>GIMP EXTENSION REPOSITORY</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="..\ui-scripts\sidebar.js"></script>
   </head>
-  <body></body>
+  <body>
+    <div class="header">
+      <h1>GIMP EXTENSION REPOSITORY</h1>
+      <div class="clearfix"></div>
+      <a href="javascript:void(0)" onclick="toggle()">
+        <div class="hamburger">
+          <a href="javascript:void(0)" onclick="toggle()">
+          <!-- Hamburger icon lines -->
+          <div></div>
+          <div></div>
+          <div></div>
+        </a>
+        </div>
+      
+    </div>
+    <main id="main">
+      <div class="content">
+        <div class="profile">
+          <div class="profile-image"></div>
+          <h1>Username</h1>
+        </div>
+        <div class="nav-tabs">
+          <a href="#" class="tab">Manage Downloads</a>
+          <a href="#" class="tab">Manage Uploads</a>
+        </div>
+        <!-- Your Extension Area-->
+        <div class="extension-item">
+          <div class="extension-icon"></div>
+          <div class="extension-info">
+            <h2 class="extension-title">Your Extension</h2>
+            <p class="extension-meta">Author: Username</p>
+            <p class="extension-meta">Version: 1.0</p>
+          </div>
+          <div class="extension-actions">
+            <button class="btn btn-upload">Upload Update</button>
+            <button class="btn btn-edit">Edit Extension Info</button>
+            <button class="btn btn-remove">Remove</button>
+          </div>
+        </div>
+      </div>
+    </main>
+    <div class="sidebar" id="sidebar">
+      <nav>
+        <h1>Menu</h1>
+        <div class="menu">
+          <ul>
+            <li>
+              <a href="#">
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span>Extension Registry</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </body>
 </html>

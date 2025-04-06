@@ -4,7 +4,6 @@ CREATE TABLE User (
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     username VARCHAR(100) NOT NULL UNIQUE,
-    description TEXT,
     userDonationPath VARCHAR(500)
 );
 
@@ -32,6 +31,7 @@ CREATE TABLE ExtensionRelease (
     extensionID INT NOT NULL,
     releaseVersion VARCHAR(50) NOT NULL,
     releaseDate DATE,
+    releaseMetadata
     FOREIGN KEY (extensionID) REFERENCES Extension(extensionID) ON DELETE CASCADE
 );
 
@@ -40,6 +40,17 @@ CREATE TABLE ExtensionBug (
     bugID INT AUTO_INCREMENT PRIMARY KEY,
     bugTitle VARCHAR(255) NOT NULL,
     bugDescription TEXT,
+    extensionID INT NOT NULL,
+    FOREIGN KEY (extensionID) REFERENCES Extension(extensionID) ON DELETE CASCADE
+);
+
+-- ExtensionScreenshot Table
+CREATE TABLE ExtensionScreenshot (
+    ScreenshotURL1 TEXT NOT NULL,
+    ScreenshotURL2 TEXT,
+    ScreenshotURL3 TEXT,
+    ScreenshotURL4 TEXT,
+    ScreenshotURL5 TEXT
     extensionID INT NOT NULL,
     FOREIGN KEY (extensionID) REFERENCES Extension(extensionID) ON DELETE CASCADE
 );

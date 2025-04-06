@@ -1,0 +1,248 @@
+* {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: white;
+}
+
+.header {
+  background-color: #0e2229;
+  color: white;
+  padding: 15px 20px;
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 24px;
+  z-index: 3;
+}
+
+.hamburger div {
+  width: 100%;
+  height: 5px;
+  margin-bottom: 10px;
+  background-color: white;
+}
+
+.content {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-image {
+  width: 250px;
+  height: 250px;
+  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.nav-tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 8px 15px;
+  background-color: #929292;
+  color: black;
+  text-decoration: none;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.extension-item {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  padding: 15px 0;
+  align-items: center;
+}
+
+.extension-icon {
+  width: 160px;
+  height: 160px;
+  background-color: #ddd;
+  margin-right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.extension-title {
+  font-size: 24px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 200px;
+  text-align: center;
+}
+
+.btn-upload {
+  background-color: #e9b653;
+}
+
+.btn-edit {
+  background-color: #5989bd;
+}
+
+.btn-remove {
+  background-color: #e85c5c;
+}
+
+nav {
+  padding: 1rem;
+}
+
+.menu li {
+  list-style-type: none;
+  padding-top: 1rem;
+  color: black;
+}
+
+.menu a {
+  text-decoration: none;
+}
+
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  background-color: grey;
+}
+
+.modal {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+  background-color: #c9c9c9;
+  border: #828282 1px solid;
+  border-radius: 3px;
+  width: max-content;
+}
+
+/* Css for modal components */
+.modal {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.modal form {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.submitButton {
+  border: none;
+  border-radius: 3px;
+  color: white;
+  margin: 10px;
+  background-color: RGB(59, 156, 39);
+  padding: 10px;
+}
+
+.uploadButton {
+  border: none;
+  border-radius: 3px;
+  color: rgb(0, 0, 0);
+  background-color: RGB(231, 200, 20);
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Css for search page */
+
+.search {
+  margin-top: 20px;
+}
+
+.searchHead {
+  background-color: #828282;
+  display: flex;
+  column-gap: 10px;
+  border-radius: 3px;
+  border: 1px solid #3c3c3c;
+  width: max-content;
+}
+
+.searchField {
+  margin: 10px;
+  padding: 5px;
+}
+
+.placeholder {
+  background-color: purple;
+}
+
+.result {
+  width: inherit;
+  border-bottom: #0e2229 1px solid;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+  padding-right: 50%;
+}
+
+#resultsContainer {
+  margin-top: 10px;
+  border-top: #0e2229 1px solid;
+}
+
+.tagfield {
+  display: flex;
+  flex-direction: row;
+  width: max-content;
+  column-gap: 10px;
+}
+
+.resultButtons {
+  padding: 10px;
+  color: white;
+  border-radius: 3px;
+  border: none;
+}
+
+.moreInfo {
+  background-color: grey;
+}
+
+.download {
+  background-color: green;
+}
