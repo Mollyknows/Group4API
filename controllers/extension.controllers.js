@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
     router = express.Router();
 
 const service = require('../services/extension.service')
@@ -29,7 +29,8 @@ const service = require('../services/extension.service')
     try {
       const { id, version } = req.params;
       
-      // Logic to retrieve the extension package
+      // implement logic to retrieve the extension package
+
       const filePath = `path/to/repository/extensions/${id}/${version}/package.zip`;
       
       // Send the file for download
@@ -54,7 +55,9 @@ const service = require('../services/extension.service')
   //User must be logged in to upload an extension
   router.post('/extensions', authenticateUser, upload.single('extension'), (req, res) => {
     try {
-      // Process the uploaded file and extension metadata
+
+       //implementt logic to save the extension data and file
+        
       const extensionData = req.body;
       const uploadedFile = req.file;
       
@@ -78,7 +81,7 @@ const service = require('../services/extension.service')
     try {
       const { id, version } = req.params;
       
-        // Logic to retrieve the extension
+        // implement logic to retrieve the extension
       
       res.status(200).json({
         success: true,
@@ -100,7 +103,7 @@ const service = require('../services/extension.service')
       const { id, version } = req.params;
       const updateData = req.body;
       
-      // Logic to update the extension metadata and file
+      // implement logic to update the extension metadata and file
 
       res.status(200).json({
         success: true,
@@ -122,7 +125,7 @@ const service = require('../services/extension.service')
     try {
       const { id, version } = req.params;
 
-      // Logic to delete the extension from the repository
+      // implement logic to delete the extension from the repository
       
       res.status(200).json({
         success: true,
@@ -143,7 +146,7 @@ const service = require('../services/extension.service')
       const { id } = req.params;
       const { reason, details } = req.body;
 
-      // Logic to flag the extension for review
+      // implement logic to flag the extension for review
       
       
       res.status(200).json({
@@ -164,7 +167,7 @@ const service = require('../services/extension.service')
     try {
       const { id } = req.params;
       
-        // Logic to retrieve the plugin by ID
+        // implement logic to retrieve the plugin by ID
             
       res.status(200).json({
         success: true,
@@ -184,7 +187,7 @@ const service = require('../services/extension.service')
     try {
       const extensionData = req.body;
       
-        // Logic to sanitize the extension data
+        // implement logic to sanitize the extension data
       
       res.status(200).json({
         success: true,
@@ -205,7 +208,7 @@ const service = require('../services/extension.service')
     try {
       const { searchQuery, tags } = req.params;
       
-      // Logic to search for extensions based on the query and tags
+      // implement logic to search for extensions based on the query and tags
       
       res.status(200).json({
         success: true,
