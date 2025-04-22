@@ -11,13 +11,13 @@ const service = require('../services/auth.service')
     });
     
     // POST /auth/login
-    router.post('/auth/login', async (req, res) => {
+    router.get('/auth/login', async (req, res) => {
         const loginUser = await service.loginUser(req, res);
         res.send(loginUser);
     });
     
     // POST /auth/logout
-    router.post('/auth/logout', async (req, res) => {
+    router.get('/auth/logout', async (req, res) => {
         const logoutUser = await service.logoutUser(req, res);
         res.send(logoutUser);
     });
