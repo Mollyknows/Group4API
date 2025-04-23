@@ -6,7 +6,7 @@ const express = require('express');
 const service = require('../services/extension.service')
 
     
-
+    // GET /repository/metadata
     // Retrieves metadata from the repository
     module.exports.getMetadata = async (req, res) => {
         try {
@@ -25,7 +25,7 @@ const service = require('../services/extension.service')
         }
     };
     
-
+    // GET /repository/extensions/{id}/{version}
     // Download a specific version of an extension from the repository
     module.exports.getExtension = async (req, res) => {
         try {
@@ -52,7 +52,8 @@ const service = require('../services/extension.service')
         }
     };
     
-
+    // POST /extensions
+    // Upload a new extension to the repository
     //User must be logged in to upload an extension
     module.exports.uploadExtension = async (req, res) => {
         try {
@@ -76,7 +77,7 @@ const service = require('../services/extension.service')
         }
     };
     
-
+    // GET /extensions/:id
     // Retrieves a specific version of an extension from the repository
     module.exports.getExtensionDetails = async (req, res) => {
         try {
