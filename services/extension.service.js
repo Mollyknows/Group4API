@@ -14,13 +14,13 @@ const service = require('../services/extension.service')
             //implement logic to retrieve metadata from the repository <<-----Need DB structure to implement this
         
             return res.status(200).json({
-            success: true,
-            data: metadata
+                success: true,
+                data: metadata
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to retrieve repository metadata'
+                success: false,
+                error: 'Failed to retrieve repository metadata'
         });
         }
     };
@@ -38,7 +38,7 @@ const service = require('../services/extension.service')
             // Send the file for download
             return res.download(filePath, `extension-${id}-v${version}.zip`, (err) => {
             if (err) {
-            res.status(404).json({
+            return res.status(404).json({
                 success: false,
                 error: 'Extension package not found'
             });
@@ -46,8 +46,8 @@ const service = require('../services/extension.service')
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to download extension package'
+                success: false,
+                error: 'Failed to download extension package'
         });
         }
     };
@@ -57,21 +57,21 @@ const service = require('../services/extension.service')
     module.exports.uploadExtension = async (req, res) => {
         try {
 
-        //implement logic to save the extension data and file
-            
-        const extensionData = req.body;
-        const uploadedFile = req.file;
+            //implement logic to save the extension data and file
+                
+            const extensionData = req.body;
+            const uploadedFile = req.file;
         
         
             return res.status(201).json({
-            success: true,
-            message: 'Extension uploaded successfully',
-            data: { id: 'new-extension-id' } // Replace with actual saved extension data
+                success: true,
+                message: 'Extension uploaded successfully',
+                data: { id: 'new-extension-id' } // Replace with actual saved extension data
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to upload extension'
+                success: false,
+                error: 'Failed to upload extension'
         });
         }
     };
@@ -80,18 +80,18 @@ const service = require('../services/extension.service')
     // Retrieves a specific version of an extension from the repository
     module.exports.getExtensionDetails = async (req, res) => {
         try {
-        const { id, version } = req.params;
+            const { id, version } = req.params;
         
             // implement logic to retrieve the extension
         
             return res.status(200).json({
-            success: true,
-            data: extension
+                success: true,
+                data: extension
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to retrieve extension'
+                success: false,
+                error: 'Failed to retrieve extension'
         });
         }
     };
@@ -107,14 +107,14 @@ const service = require('../services/extension.service')
             // implement logic to update the extension metadata and file
 
             return res.status(200).json({
-            success: true,
-            message: 'Extension updated successfully',
-            data: { id, version } // Replace with actual updated extension data
+                success: true,
+                message: 'Extension updated successfully',
+                data: { id, version } // Replace with actual updated extension data
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to update extension'
+                success: false,
+                error: 'Failed to update extension'
         });
         }
     };
@@ -129,13 +129,13 @@ const service = require('../services/extension.service')
             // implement logic to delete the extension from the repository
         
             return res.status(200).json({
-            success: true,
-            message: 'Extension deleted successfully'
+                success: true,
+                message: 'Extension deleted successfully'
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to delete extension'
+                success: false,
+                error: 'Failed to delete extension'
         });
         }
     };
@@ -151,13 +151,13 @@ const service = require('../services/extension.service')
             
             
             return res.status(200).json({
-            success: true,
-            message: 'Extension flagged successfully'
+                success: true,
+                message: 'Extension flagged successfully'
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to flag extension'
+                success: false,
+                error: 'Failed to flag extension'
         });
         }
     };
@@ -171,13 +171,13 @@ const service = require('../services/extension.service')
             // implement logic to retrieve the plugin by ID
                 
             return res.status(200).json({
-            success: true,
-            data: plugin
+                success: true,
+                data: plugin
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to retrieve plugin'
+                success: false,
+                error: 'Failed to retrieve plugin'
         });
         }
     };
@@ -193,14 +193,14 @@ const service = require('../services/extension.service')
             // implement logic to save the plugin data and file
         
             return res.status(201).json({
-            success: true,
-            message: 'Plugin uploaded successfully',
-            data: { id: 'new-plugin-id' } // Replace with actual saved plugin data
+                success: true,
+                message: 'Plugin uploaded successfully',
+                data: { id: 'new-plugin-id' } // Replace with actual saved plugin data
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to upload plugin'
+                success: false,
+                error: 'Failed to upload plugin'
         });
         }
     };
@@ -216,14 +216,14 @@ const service = require('../services/extension.service')
             // implement logic to update the plugin metadata and file
         
             return res.status(200).json({
-            success: true,
-            message: 'Plugin updated successfully',
-            data: { id } // Replace with actual updated plugin data
+                success: true,
+                message: 'Plugin updated successfully',
+                data: { id } // Replace with actual updated plugin data
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to update plugin'
+                success: false,
+                error: 'Failed to update plugin'
         });
         }
     };
@@ -238,13 +238,13 @@ const service = require('../services/extension.service')
             // implement logic to delete the plugin from the repository
         
             return res.status(200).json({
-            success: true,
-            message: 'Plugin deleted successfully'
+                success: true,
+                message: 'Plugin deleted successfully'
         });
         } catch (error) {
             return res.status(500).json({
-            success: false,
-            error: 'Failed to delete plugin'
+                success: false,
+                error: 'Failed to delete plugin'
         });
         }
     };
@@ -253,19 +253,19 @@ const service = require('../services/extension.service')
     // Sanitize the extension data before uploading
     module.exports.sanitizeExtension = async(req, res) => {
         try {
-        const extensionData = req.body;
+            const extensionData = req.body;
         
             // implement logic to sanitize the extension data
         
-        return res.status(200).json({
-            success: true,
-            message: 'Extension sanitized successfully',
-            data: sanitizationResults
+            return res.status(200).json({
+                success: true,
+                message: 'Extension sanitized successfully',
+                data: sanitizationResults
         });
         } catch (error) {
-        return res.status(500).json({
-            success: false,
-            error: 'Failed to sanitize extension'
+            return res.status(500).json({
+                success: false,
+                error: 'Failed to sanitize extension'
         });
         }
     };
@@ -274,18 +274,18 @@ const service = require('../services/extension.service')
     // Search for extensions based on a query and optional tags
     module.exports.searchExtensions = async(req, res) => {
         try {
-        const { searchQuery, tags } = req.params;
+            const { searchQuery, tags } = req.params;
         
-        // implement logic to search for extensions based on the query and tags
+            // implement logic to search for extensions based on the query and tags
         
-        return res.status(200).json({
-            success: true,
-            data: searchResults
+            return res.status(200).json({
+                success: true,
+                data: searchResults
         });
         } catch (error) {
-        return res.status(500).json({
-            success: false,
-            error: 'Failed to search extensions'
+            return res.status(500).json({
+                success: false,
+                error: 'Failed to search extensions'
         });
         }
     };
