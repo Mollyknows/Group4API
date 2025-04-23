@@ -13,7 +13,7 @@ const service = require('../services/auth.service')
     // POST /auth/login
     router.get('/auth/login', async (req, res) => {
         const loginUser = await service.loginUser(req, res);
-        res.send(loginUser);
+        res.get(loginUser);
     });
     
     // POST /auth/logout

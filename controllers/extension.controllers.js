@@ -3,225 +3,109 @@ const express = require('express');
 
 const service = require('../services/extension.service')
 
-  
   // GET /repository/metadata
   // Retrieves metadata from the repository
-  router.get('/repository/metadata', (req, res) => {
-    try {
-     
-        //implement logic to retrieve metadata from the repository
-      
-      res.status(200).json({
-        success: true,
-        data: metadata
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to retrieve repository metadata'
-      });
-    }
+  router.get('/repository/metadata', async (req, res) => {
+    const metadata = await service.getMetadata();
+    res.get(metadata);    
   });
-  
+
   // GET /repository/extensions/{id}/{version}
   // Download a specific version of an extension from the repository
-  router.get('/repository/extensions/:id/:version', (req, res) => {
-    try {
-      const { id, version } = req.params;
-      
-      // implement logic to retrieve the extension package
-
-      const filePath = `path/to/repository/extensions/${id}/${version}/package.zip`;
-      
-      // Send the file for download
-      res.download(filePath, `extension-${id}-v${version}.zip`, (err) => {
-        if (err) {
-          res.status(404).json({
-            success: false,
-            error: 'Extension package not found'
-          });
-        }
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to download extension package'
-      });
-    }
+  router.get('/repository/extensions/:id/:version', async (req, res) => {
+    const { id, version } = req.params;
+    const extension = await service.getExtension(id, version);
+    res.get(extension);
   });
-  
+
   // POST /extensions
   // Upload a new extension to the repository
-  //User must be logged in to upload an extension
-  router.post('/extensions', authenticateUser, upload.single('extension'), (req, res) => {
-    try {
+  // User must be logged in to upload an extension
+  router.post('/extensions', authenticateUser, upload.single('extension'), async (req, res) => {
+    const upload = await service.uploadExtension(req, res);
+    res.post(upload);
+  });
 
-       //implementt logic to save the extension data and file
-        
-      const extensionData = req.body;
-      const uploadedFile = req.file;
-      
-      
-      res.status(201).json({
-        success: true,
-        message: 'Extension uploaded successfully',
-        data: { id: 'new-extension-id' } // Replace with actual saved extension data
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to upload extension'
-      });
-    }
+  // GET /extensions/:id
+  // Retrieve details of a specific extension from the repository
+  router.get('/extensions/:id', async (req, res) => {
+    const { id } = req.params;
+    const extensionDetails = await service.getExtensionDetails(id);
+    res.get(extensionDetails);
   });
-  
-  // GET /extensions/:id/:version
-  // Retrieves a specific version of an extension from the repository
-  router.get('/extensions/:id/:version', (req, res) => {
-    try {
-      const { id, version } = req.params;
-      
-        // implement logic to retrieve the extension
-      
-      res.status(200).json({
-        success: true,
-        data: extension
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to retrieve extension'
-      });
-    }
-  });
-  
-  // PUT /extensions/:id/:version 
-  // Update a specific version of an extension in the repository
+
+  // PUT /extensions/:id
+  // Update an existing extension in the repository 
   // User must be logged in to update an extension
-  router.put('/extensions/:id/:version', authenticateUser, upload.single('extension'), (req, res) => {
-    try {
-      const { id, version } = req.params;
-      const updateData = req.body;
-      
-      // implement logic to update the extension metadata and file
-
-      res.status(200).json({
-        success: true,
-        message: 'Extension updated successfully',
-        data: { id, version } // Replace with actual updated extension data
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to update extension'
-      });
-    }
+  router.put('/extensions/:id', authenticateUser, async (req, res) => {
+    const { id } = req.params;
+    const update = await service.updateExtension(id, req.body);
+    res.put(update);
   });
-  
-  // DELETE /extensions/:id/:version
-  // Delete a specific version of an extension from the repository
+
+  // DELETE /extensions/:id
+  // Delete an extension from the repository
   // User must be logged in to delete an extension
-  router.delete('/extensions/:id/:version', authenticateUser, (req, res) => {
-    try {
-      const { id, version } = req.params;
-
-      // implement logic to delete the extension from the repository
-      
-      res.status(200).json({
-        success: true,
-        message: 'Extension deleted successfully'
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to delete extension'
-      });
-    }
+  router.delete('/extensions/:id', authenticateUser, async (req, res) => {
+    const { id } = req.params;
+    const deleteExtension = await service.deleteExtension(id);
+    res.delete(deleteExtension);
   });
-  
+
   // POST /extensions/:id/flags
   // Flags an extension for review
-  router.post('/extensions/:id/flags', (req, res) => {
-    try {
-      const { id } = req.params;
-      const { reason, details } = req.body;
-
-      // implement logic to flag the extension for review
-      
-      
-      res.status(200).json({
-        success: true,
-        message: 'Extension flagged successfully'
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to flag extension'
-      });
-    }
+  router.post('/extensions/:id/flags', async (req, res) => {
+    const { id } = req.params;
+    const flag = await service.flagExtension(id, req.body);
+    res.post(flag);
   });
-  
+
   // GET /plugins/:id
   // Retrieve a specific plugin by ID
-  router.get('/plugins/:id', (req, res) => {
-    try {
-      const { id } = req.params;
-      
-        // implement logic to retrieve the plugin by ID
-            
-      res.status(200).json({
-        success: true,
-        data: plugin
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to retrieve plugin'
-      });
-    }
+  router.get('/plugins/:id', async (req, res) => {
+    const { id } = req.params;
+    const plugin = await service.getPlugin(id);
+    res.get(plugin);
   });
-  
-  // PUT /Extension/SanitizeExtension
-  // Sanitize the extension data before uploading
-  router.put('/Extension/SanitizeExtension', authenticateUser, (req, res) => {
-    try {
-      const extensionData = req.body;
-      
-        // implement logic to sanitize the extension data
-      
-      res.status(200).json({
-        success: true,
-        message: 'Extension sanitized successfully',
-        data: sanitizationResults
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to sanitize extension'
-      });
-    }
+
+  // POST /plugins/:id
+  // Upload a new plugin to the repository
+  // User must be logged in to upload a plugin
+  router.post('/plugins/:id', authenticateUser, async (req, res) => {
+    const { id } = req.params;
+    const uploadPlugin = await service.uploadPlugin(id, req.body);
+    res.post(uploadPlugin);
   });
-  
+ 
+  // PUT /plugins/:id
+  // Update an existing plugin in the repository
+  // User must be logged in to update a plugin
+  router.put('/plugins/:id', authenticateUser, async (req, res) => {
+    const { id } = req.params;
+    const updatePlugin = await service.updatePlugin(id, req.body);
+    res.put(updatePlugin);
+  });
+
+  // DELETE /plugins/:id
+  // Delete a plugin from the repository
+  // User must be logged in to delete a plugin
+  router.delete('/plugins/:id', authenticateUser, async (req, res) => {
+    const { id } = req.params;
+    const deletePlugin = await service.deletePlugin(id);
+    res.delete(deletePlugin);
+  });
+
+  // PUT /Extenstionsion/SanitizeExtension
+  // Sanitize an extension to remove any malicious code
+  router.put('/extensions/sanitize', async (req, res) => {
+    const sanitize = await service.sanitizeExtension(req.body);
+    res.put(sanitize);
+  });
+
   // GET /Extension/searchExtensions/:searchQuery/:tags
-  // Search for extensions based on a query and optional tags
-  router.get('/Extension/searchExtensions/:searchQuery/:tags?', (req, res) => {
-    try {
-      const { searchQuery, tags } = req.params;
-      
-      // implement logic to search for extensions based on the query and tags
-      
-      res.status(200).json({
-        success: true,
-        data: searchResults
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        error: 'Failed to search extensions'
-      });
-    }
+  // Search for extensions based on a search query and tags
+  router.get('/extensions/search/:searchQuery/:tags?', async (req, res) => {
+    const { searchQuery, tags } = req.params;
+    const search = await service.searchExtensions(searchQuery, tags);
+    res.get(search);
   });
-
-module.exports = router;
-
-
