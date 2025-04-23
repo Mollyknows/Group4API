@@ -278,12 +278,12 @@ const service = require('../services/extension.service')
         
         // implement logic to search for extensions based on the query and tags
         
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: searchResults
         });
         } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             error: 'Failed to search extensions'
         });
