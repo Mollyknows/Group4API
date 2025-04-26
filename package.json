@@ -2,18 +2,25 @@
   "name": "webserviceengineeringproject",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "homepage": "https://github.com/Mollyknows/Group4API#readme",
+  "bugs": {
+    "url": "https://github.com/Mollyknows/Group4API/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mollyknows/Group4API.git"
   },
-  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Mollyknows/Group4API/issues"
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/Mollyknows/Group4API#readme"
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mssql": "^11.0.1"
+  }
 }
