@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 var session = require("express-session");
-const db = require("../../db");
+const db = require("../db");
 
 module.exports.registerUser = async (req, res) => {
   const { email, username, password } = req.body;

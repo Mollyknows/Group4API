@@ -1,7 +1,7 @@
-const db = require("../../db");
+const db = require("../db");
 
 const express = require("express");
-router = express.Router();
+const router = express.Router();
 
 const service = require("./extension.service");
 

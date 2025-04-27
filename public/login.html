@@ -10,7 +10,7 @@
   <body>
     <div class="modal">
       <div class="login">
-        <form action="/auth/login">
+        <form id="signInForm" action="/auth/login" method="POST">
           <p>Username:</p>
           <input type="text" id="username" class="inputfield" />
           <p>Password:</p>
@@ -20,7 +20,35 @@
             <!-- <input type="button" class="signupButton" value="Sign Up" /> -->
           </div>
         </form>
+        <div id="signInComplete"></div>
       </div>
+      <script>
+        const signInForm = document.getElementById("signInForm");
+        const signInComplete = document.getElementById("signInComplete");
+
+        signInForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const formData = new FormData(signInForm);
+          const name = formData.get("name");
+
+          fetch("/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams(formData).toString(),
+          })
+            .then((response) => signInComplete.text())
+            .then((data) => {
+              signInComplete.textContent = data;
+              signInForm.reset();
+            })
+            .catch((error) => {
+              console.error("Error submitting singin info:", error);
+              signInComplete.textContent = "An error occurred.";
+            });
+        });
+      </script>
     </div>
   </body>
 </html>

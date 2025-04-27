@@ -7,9 +7,9 @@ const { connect } = require("./db.js");
 
 // app.use(express.static(path.join(__dirname, "js")));
 app.use(bodyParser.json());
+// app.use("/api", apiRoutes);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public")); //folder for static files
-
 app.use(cors());
 
 connect()
@@ -20,13 +20,12 @@ connect()
     console.log("Database connection failed!");
   });
 
-//middleware
-app.use(bodyParser.json());
+// //middleware
+// app.use(bodyParser.json());
 // app.use("/api", apiRoutes);
-app.use(express.json());
+// app.use(express.json());
 
 // Front-end routes
-
 // Home page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
