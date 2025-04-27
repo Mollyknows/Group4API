@@ -176,6 +176,15 @@ nav {
   padding: 10px;
 }
 
+.signupButton {
+  border: none;
+  border-radius: 3px;
+  color: white;
+  margin: 10px;
+  background-color: #e9b653;
+  padding: 10px;
+}
+
 .uploadButton {
   border: none;
   border-radius: 3px;
@@ -184,6 +193,10 @@ nav {
   padding: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.buttonHolder {
+  display: flex;
 }
 
 /* Css for search page */

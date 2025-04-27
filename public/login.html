@@ -1,12 +1,26 @@
-<!-- Login Modal Component -->
-<div class="modal">
-  <div class="login">
-    <form>
-      <p>Username:</p>
-      <input type="text" class="inputfield" />
-      <p>Password:</p>
-      <input type="password" class="inputfield" />
-      <input type="submit" class="submitButton" />
-    </form>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GIMP EXTENSION REPOSITORY</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="/ui-scripts/sidebar.js"></script>
+  </head>
+  <body>
+    <div class="modal">
+      <div class="login">
+        <form action="/auth/login">
+          <p>Username:</p>
+          <input type="text" id="username" class="inputfield" />
+          <p>Password:</p>
+          <input type="password" id="password" class="inputfield" />
+          <div class="buttonHolder">
+            <input type="submit" class="submitButton" />
+            <!-- <input type="button" class="signupButton" value="Sign Up" /> -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

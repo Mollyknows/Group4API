@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const { connect } = require("./db.js");
@@ -8,6 +8,7 @@ const { connect } = require("./db.js");
 // app.use(express.static(path.join(__dirname, "js")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public")); //folder for static files
 
 app.use(cors());
 
@@ -19,18 +20,10 @@ connect()
     console.log("Database connection failed!");
   });
 
-//removed this to set up azure db connection
-// require('express-async-errors');
-
-// const db = require("./db"),
-//   extensionRoutes = require("/controllers/extension.controller.js");
-// authRoutes = require("/controllers/auth.controller.js");
-
 //middleware
 app.use(bodyParser.json());
 // app.use("/api", apiRoutes);
 app.use(express.json());
-app.use(express.static("public")); //folder for static files
 
 // Front-end routes
 
