@@ -3,22 +3,20 @@ const app = express();
 const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const { connect } = require("./db.js");
+const router = express.Router();
+const authService = require("./services/auth.service.js");
+const { connectDB } = require("./db.js");
 
 // app.use(express.static(path.join(__dirname, "js")));
 app.use(bodyParser.json());
 // app.use("/api", apiRoutes);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public")); //folder for static files
-app.use(cors());
+// app.use(cors());
 
-connect()
-  .then((connection) => {
-    console.log("Connected to the database.");
-  })
-  .catch((error) => {
-    console.log("Database connection failed!");
-  });
+connectDB().catch((error) => {
+  console.log("Database connection failed!");
+});
 
 // //middleware
 // app.use(bodyParser.json());
@@ -90,6 +88,14 @@ app.get("/profile", (req, res) => {
 app.use((err, req, res, next) => {
   console.log(err);
   res.status(err.status || 500).send("Something went wrong!");
+});
+
+// POST /auth/login
+app.post("/auth/login", async (req, res) => {
+  //   console.log(req.body);
+  //   const loginUser = await authService.loginUser(req, res);
+  //   res.get(loginUser);
+  await authService.loginUser(req, res);
 });
 
 //Starts application on localhost port 3000

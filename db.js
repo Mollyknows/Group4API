@@ -13,8 +13,19 @@ const config = {
   },
 };
 
+const connectDB = async () => {
+  try {
+    const pool = await sql.connect(config);
+    console.log("connected to the database");
+    return pool;
+  } catch (err) {
+    console.error("Database connection error:", err);
+    throw err;
+  }
+};
+
 module.exports = {
-  connect: () => sql.connect(config),
+  connectDB,
   sql,
 };
 

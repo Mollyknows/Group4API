@@ -11,10 +11,17 @@
     <div class="modal">
       <div class="login">
         <form id="signInForm" action="/auth/login" method="POST">
+          <p>Email:</p>
+          <input type="text" id="email" name="email" class="inputfield" />
           <p>Username:</p>
-          <input type="text" id="username" class="inputfield" />
+          <input type="text" id="username" name="username" class="inputfield" />
           <p>Password:</p>
-          <input type="password" id="password" class="inputfield" />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="inputfield"
+          />
           <div class="buttonHolder">
             <input type="submit" class="submitButton" />
             <!-- <input type="button" class="signupButton" value="Sign Up" /> -->
@@ -29,7 +36,9 @@
         signInForm.addEventListener("submit", function (event) {
           event.preventDefault();
           const formData = new FormData(signInForm);
-          const name = formData.get("name");
+          const email = formData.get("email");
+          const username = formData.get("username");
+          const password = formData.get("password");
 
           fetch("/auth/login", {
             method: "POST",
@@ -38,13 +47,15 @@
             },
             body: new URLSearchParams(formData).toString(),
           })
-            .then((response) => signInComplete.text())
+            .then((response) => response.text())
             .then((data) => {
-              signInComplete.textContent = data;
-              signInForm.reset();
+              console.log(data);
+              //if (data && (data === "Login successful."))
+              //signInComplete.textContent = data;
+              //signInForm.reset();
             })
             .catch((error) => {
-              console.error("Error submitting singin info:", error);
+              console.error("Error submitting login info:", error);
               signInComplete.textContent = "An error occurred.";
             });
         });
