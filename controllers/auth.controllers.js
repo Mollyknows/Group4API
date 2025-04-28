@@ -26,3 +26,5 @@ router.delete("/auth/delete", async (req, res) => {
   const deleteUser = await service.deleteUser(req, res);
   res.send(deleteUser);
 });
+
+module.exports = router;

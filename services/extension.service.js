@@ -85,7 +85,7 @@ module.exports.uploadExtension = async (req, res) => {
       success: true,
       message: "Extension uploaded successfully",
       data: {
-        id: "new-extension-id", // Replace with actual saved extension data
+        id: "new-extension-id", // Replace with actual ID after saving to DB
         filePath,
       },
     });
