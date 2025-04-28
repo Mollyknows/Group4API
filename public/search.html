@@ -1,8 +1,22 @@
 <head>
+  <script src="/ui-scripts/sessionHandler.js"></script>
+  <script src="/ui-scripts/sidebar.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <!-- Todo: Add Logic for displaying content in fields -->
 <body>
+  <div class="header">
+    <h1>GIMP EXTENSION REPOSITORY</h1>
+    <div class="clearfix"></div>
+    <div class="hamburger">
+      <a href="javascript:void(0)" onclick="toggle()">
+        <!-- Hamburger icon lines -->
+        <div></div>
+        <div></div>
+        <div></div>
+      </a>
+    </div>
+  </div>
   <div class="search">
     <form class="searchHead">
       <input
@@ -25,6 +39,33 @@
     then supplied to the frontend.
      -->
     <div id="resultsContainer"></div>
+  </div>
+  <div class="sidebar" id="sidebar">
+    <nav>
+      <h1>Menu</h1>
+      <div class="menu">
+        <ul>
+          <li>
+            <a href="/">
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="/search">
+              <span>Extension Registry</span>
+            </a>
+          </li>
+          <li class="loggedOut">
+            <a href="/login">
+              <span>Login</span>
+            </a>
+          </li>
+          <li class="loggedIn">
+            <button onclick="fetch('/auth/logout')">Logout</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
   </div>
 </body>
 <script src="ui-scripts/fetcher.js"></script>

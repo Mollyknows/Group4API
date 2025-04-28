@@ -4,8 +4,6 @@ const router = express.Router();
 
 const extensionService = require("../services/extension.service");
 
-
-
 // // GET /repository/metadata
 // // Retrieves metadata from the repository
 // router.get("/repository/metadata", async (req, res) => {
@@ -36,11 +34,15 @@ const extensionService = require("../services/extension.service");
 // POST /extensions
 // Upload a new extension to the repository
 // User must be logged in to upload an extension
-router.post("/extensions", upload.single("file"), extensionService.uploadExtension),
-  async (req, res) => {
-    const upload = await service.uploadExtension(req, res);
-    res.post(upload);
-  };
+// router.post(
+//   "/extensions",
+//   upload.single("file"),
+//   extensionService.uploadExtension
+// ),
+//   async (req, res) => {
+//     const upload = await service.uploadExtension(req, res);
+//     res.post(upload);
+//   };
 
 // GET /extensions/:id
 // Retrieve details of a specific extension from the repository
@@ -49,7 +51,6 @@ router.get("/extensions/:id", async (req, res) => {
   const extensionDetails = await service.getExtensionDetails(id);
   res.get(extensionDetails);
 });
-
 
 // // GET /extensions/:id
 // // Retrieve details of a specific extension from the repository
@@ -76,7 +77,6 @@ router.get("/extensions/:id", async (req, res) => {
 //   const deleteExtension = await service.deleteExtension(id);
 //   res.delete(deleteExtension);
 // });
-
 
 // // POST /extensions/:id/flags
 // // Flags an extension for review
@@ -130,7 +130,7 @@ router.get("/extensions/:id", async (req, res) => {
 
 router.get("/extensions", async (req, res) => {
   try {
-    const extensions = await service.getAllExtensions();
+    const extensions = await extensionService.getAllExtensions();
     res.status(200).json({
       success: true,
       data: extensions,
@@ -147,9 +147,8 @@ router.get("/extensions", async (req, res) => {
 // PUT /Extenstionsion/SanitizeExtension
 // Sanitize an extension to remove any malicious code
 router.put("/extensions/sanitize", async (req, res) => {
-  const sanitize = await service.sanitizeExtension(req.body);
+  const sanitize = await extensionService.sanitizeExtension(req.body);
   res.put(sanitize);
-
 });
 
 // GET /Extension/searchExtensions/:searchQuery/:tags
@@ -157,7 +156,7 @@ router.put("/extensions/sanitize", async (req, res) => {
 router.get("/extensions/search/:searchQuery", async (req, res) => {
   try {
     const { searchQuery } = req.params;
-    const search = await service.searchExtensions(searchQuery);
+    const search = await extensionService.searchExtensions(searchQuery);
     res.status(200).json(search);
   } catch (error) {
     console.error("Error in /extensions/search/:searchQuery:", error);
