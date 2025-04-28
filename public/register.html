@@ -1,14 +1,74 @@
-<div class="modal">
-  <form>
-    <h1>Sign Up</h1>
-    <p>Email:</p>
-    <input type="text" class="inputfield" id="email" />
-    <p>Username:</p>
-    <input type="text" class="inputfield" id="username" />
-    <p>Password:</p>
-    <input type="password" class="inputfield" id="passone" />
-    <p>Re-Enter Password:</p>
-    <input type="password" class="inputfield" id="passtwo" />
-    <input type="submit" class="submitButton" value="Sign Up" id="signup" />
-  </form>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GIMP EXTENSION REPOSITORY</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="/ui-scripts/sidebar.js"></script>
+  </head>
+  <body>
+    <div class="modal">
+      <div class="login">
+        <form id="signInForm" action="/auth/register" method="POST">
+          <h1>Sign Up</h1>
+          <div id="signInComplete"></div>
+          <div id="errorMessage"></div>
+          <p>Email:</p>
+          <input type="text" id="email" name="email" class="inputfield" />
+          <p>Username:</p>
+          <input type="text" id="username" name="username" class="inputfield" />
+          <p>Password:</p>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="inputfield"
+          />
+          <div class="buttonHolder">
+            <input type="submit" class="submitButton" />
+          </div>
+        </form>
+      </div>
+      <script>
+        signInForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const formData = new FormData(signInForm);
+          const email = formData.get("email");
+          const username = formData.get("username");
+          const password = formData.get("password");
+          if (email && username && password) {
+            fetch("/auth/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: new URLSearchParams(formData).toString(),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.error) {
+                  errorMessage.textContent = data.error;
+                  signInComplete.textContent = "";
+                } else if (data.message === "New account logged..") {
+                  signInComplete.textContent = data.message;
+                  errorMessage.textContent = "";
+                  console.log(data);
+                  window.location.href = "/login";
+                } else {
+                  signInComplete.textContent =
+                    data.message || "Registration failed for unknown reason";
+                  errorMessage.textContent = "";
+                }
+              })
+              .catch((error) => {
+                console.error("Error entering registration info:", error);
+                signInComplete.textContent = "";
+                errorMessage.textContent = "An error occurred.";
+              });
+          }
+        });
+      </script>
+    </div>
+  </body>
+</html>

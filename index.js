@@ -12,7 +12,7 @@ app.use(express.static("public")); //folder for static files
 
 app.use(
   session({
-    secret: "process.env.SECRET",
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
@@ -95,7 +95,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).send("Something went wrong!");
 });
 
-// POST /auth/login
+// route to auth services
 app.use("/auth", authService);
 
 //Starts application on localhost port 3000
