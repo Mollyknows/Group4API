@@ -142,6 +142,7 @@ router.get("/extensions", async (req, res) => {
       message: "Internal server error",
     });
   }
+});
 
 // PUT /Extenstionsion/SanitizeExtension
 // Sanitize an extension to remove any malicious code
