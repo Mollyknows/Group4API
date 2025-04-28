@@ -9,19 +9,13 @@
         type="search"
         class="searchField"
         id="searchtext"
-        placeholder="search"
-      />
-      <input
-        type="search"
-        class="searchField"
-        id="tags"
-        placeholder="tags (separated by comma)"
+        placeholder="search extension"
       />
       <input
         type="submit"
         class="submitButton"
         value="Search"
-        onclick="handleSearch()"
+        onclick="handleSearch(event)"
       />
     </form>
     <!-- 
@@ -42,10 +36,6 @@
           <p>Author:</p>
           <p>Latest Version:</p>
         </div>
-        <div class="tagfield">
-          <p>tag</p>
-          <p>tag</p>
-        </div>
         <div class="buttons">
           <button class="resultButtons , moreInfo">More Info</button>
           <button class="resultButtons , download">Download</button>
@@ -63,4 +53,4 @@
     </div>
   </div>
 </body>
-<script href=""></script>
+<script href="fetcher.js"></script>

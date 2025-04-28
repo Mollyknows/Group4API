@@ -1,4 +1,4 @@
-const db = require("../db");
+const { connectDB, sql } = require("../db");
 
 const express = require("express");
 const router = express.Router();
@@ -271,12 +271,16 @@ module.exports.sanitizeExtension = async (req, res) => {
 module.exports.searchExtensions = async (req, res) => {
   try {
     const { searchQuery, tags } = req.params;
+    
+    const pool = await connectDB();
 
-    // implement logic to search for extensions based on the query and tags
+    let query = `SELECT * FROM Extensions WHERE name LIKE '%${searchQuery}%' OR description LIKE '%${searchQuery}%'`
+    
+    const queryResult = await pool.request().input("searchQuery", sql.NVarChar, `%${searchQuery}%`).query(query);
 
     return res.status(200).json({
       success: true,
-      data: searchResults,
+      data: queryResult.recordset,
     });
   } catch (error) {
     return res.status(500).json({
