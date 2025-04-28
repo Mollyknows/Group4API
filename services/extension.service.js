@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const fs = require("fs");
+const multer = require("multer");
 const storage = multer.memoryStorage(); // Store files
 const upload = multer({ storage });
 
@@ -308,16 +309,18 @@ module.exports.getAllExtensions = async () => {
 // Search for extensions based on a query and optional tags
 module.exports.searchExtensions = async (searchQuery) => {
   try {
-    
     const pool = await connectDB();
 
     let query = `SELECT * FROM Extension WHERE name LIKE @searchQuery OR description LIKE @searchQuery`;
-    
-    const queryResult = await pool.request().input("searchQuery", sql.NVarChar, `%${searchQuery}%`).query(query);
+
+    const queryResult = await pool
+      .request()
+      .input("searchQuery", sql.NVarChar, `%${searchQuery}%`)
+      .query(query);
 
     return {
       success: true,
-      data: queryResult.recordset
+      data: queryResult.recordset,
     };
   } catch (error) {
     console.error("Error in searchExrensions method:", error);
