@@ -2,8 +2,10 @@ const { connectDB, sql } = require("../db");
 
 const express = require("express");
 const router = express.Router();
-
-const service = require("./extension.service");
+const path = require("path");
+const fs = require("fs");
+const storage = multer.memoryStorage(); // Store files
+const upload = multer({ storage });
 
 // GET /repository/metadata
 // Retrieves metadata from the repository
@@ -55,15 +57,37 @@ module.exports.getExtension = async (req, res) => {
 //User must be logged in to upload an extension
 module.exports.uploadExtension = async (req, res) => {
   try {
-    //implement logic to save the extension data and file
-
     const extensionData = req.body;
     const uploadedFile = req.file;
+
+    if (!uploadedFile) {
+      return res.status(400).json({
+        success: false,
+        error: "No file uploaded",
+      });
+    }
+
+    // Define the directory to save the file
+    const extensionsDir = path.join(__dirname, "../extensions");
+
+    // Ensure the directory exists
+    if (!fs.existsSync(extensionsDir)) {
+      fs.mkdirSync(extensionsDir, { recursive: true });
+    }
+
+    // Define the file path
+    const filePath = path.join(extensionsDir, uploadedFile.originalname);
+
+    // Save the file to the directory
+    fs.writeFileSync(filePath, uploadedFile.buffer);
 
     return res.status(201).json({
       success: true,
       message: "Extension uploaded successfully",
-      data: { id: "new-extension-id" }, // Replace with actual saved extension data
+      data: {
+        id: "new-extension-id", // Replace with actual saved extension data
+        filePath,
+      },
     });
   } catch (error) {
     return res.status(500).json({
