@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const router = express.Router();
-// var session = require("express-session");
+const session = require("express-session");
 // const db = require("../db");
 // const sql = require("mssql");
 const { connectDB, sql } = require("../db");
@@ -39,35 +39,55 @@ const { connectDB, sql } = require("../db");
 //   res.status(201).json({ message: "User registered successfully." });
 // };
 
-module.exports.loginUser = async (req, res) => {
-  const { email, username, password } = req.body;
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
-  let pool;
-  // Check if the user exists
-  pool = await connectDB();
-  let user = await pool
-    .request()
-    .input("email", sql.NVarChar(255), email)
-    .query("select * from [dbo].[User] where email = @email");
-
-  console.log(user);
-
-  if (user.recordset[0] === undefined) {
-    return res.status(401).json({ error: "Invalid email or password." });
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ error: "Please provide email and password." });
   }
 
-  // Compare passwords
-  const isMatch = await bcrypt.compare(password, user.recordset[0].password);
+  try {
+    // Check if the user exists
+    const pool = await connectDB();
+    let result = await pool
+      .request()
+      .input("email", sql.NVarChar(255), email)
+      .query("select * from [dbo].[User] where email = @email");
 
-  if (!isMatch) {
-    return res.status(401).json({ error: "Invalid email or password." });
+    user = result.recordset[0];
+
+    if (!user) {
+      return res.status(401).json({ error: "Invalid email or password." });
+    }
+
+    //compare passwords
+    let isMatch = false;
+    if (user.password) {
+      isMatch = password === user.password;
+    }
+
+    if (!isMatch) {
+      return res.status(401).json({ error: "Invalid email or password." });
+    }
+
+    // Set session or token here
+    req.session.user = {
+      id: user.userID,
+      email: user.email,
+      username: user.username,
+    };
+
+    res.status(200).json({
+      message: "Login successful.",
+      user: { id: user.userID, email: user.email, username: user.username },
+    });
+  } catch (e) {
+    console.error("Login error:", e);
+    res.status(500).json({ e: "Failed to Login." });
   }
-
-  // Set session or token here
-
-  res.status(200).json({ message: "Login successful." });
-};
-
+});
 // module.exports.logoutUser = async (req, res) => {
 //   // Clear the session or token here
 //   req.session.destroy((err) => {
@@ -93,3 +113,4 @@ module.exports.loginUser = async (req, res) => {
 
 //   res.status(200).json({ message: "User deleted successfully." });
 // };
+module.exports = router;

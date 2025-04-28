@@ -1,18 +1,23 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const cors = require("cors");
 const bodyParser = require("body-parser");
-const router = express.Router();
 const authService = require("./services/auth.service.js");
+const session = require("express-session");
 const { connectDB } = require("./db.js");
 
-// app.use(express.static(path.join(__dirname, "js")));
 app.use(bodyParser.json());
-// app.use("/api", apiRoutes);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public")); //folder for static files
-// app.use(cors());
+
+app.use(
+  session({
+    secret: "process.env.SECRET",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
 
 connectDB().catch((error) => {
   console.log("Database connection failed!");
@@ -91,12 +96,7 @@ app.use((err, req, res, next) => {
 });
 
 // POST /auth/login
-app.post("/auth/login", async (req, res) => {
-  //   console.log(req.body);
-  //   const loginUser = await authService.loginUser(req, res);
-  //   res.get(loginUser);
-  await authService.loginUser(req, res);
-});
+app.use("/auth", authService);
 
 //Starts application on localhost port 3000
 app.listen(3000, () => console.log("Server Started on port 3000"));

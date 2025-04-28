@@ -11,10 +11,10 @@
     <div class="modal">
       <div class="login">
         <form id="signInForm" action="/auth/login" method="POST">
+          <div id="signInComplete"></div>
+          <div id="errorMessage"></div>
           <p>Email:</p>
           <input type="text" id="email" name="email" class="inputfield" />
-          <p>Username:</p>
-          <input type="text" id="username" name="username" class="inputfield" />
           <p>Password:</p>
           <input
             type="password"
@@ -24,20 +24,19 @@
           />
           <div class="buttonHolder">
             <input type="submit" class="submitButton" />
-            <!-- <input type="button" class="signupButton" value="Sign Up" /> -->
+            <input type="button" class="signupButton" value="Sign Up" />
           </div>
         </form>
-        <div id="signInComplete"></div>
       </div>
       <script>
         const signInForm = document.getElementById("signInForm");
         const signInComplete = document.getElementById("signInComplete");
+        const errorMessage = document.getElementById("errorMessage");
 
         signInForm.addEventListener("submit", function (event) {
           event.preventDefault();
           const formData = new FormData(signInForm);
           const email = formData.get("email");
-          const username = formData.get("username");
           const password = formData.get("password");
 
           fetch("/auth/login", {
@@ -47,16 +46,26 @@
             },
             body: new URLSearchParams(formData).toString(),
           })
-            .then((response) => response.text())
+            .then((response) => response.json())
             .then((data) => {
-              console.log(data);
-              //if (data && (data === "Login successful."))
-              //signInComplete.textContent = data;
-              //signInForm.reset();
+              if (data.error) {
+                errorMessage.textContent = data.error;
+                signInComplete.textContent = "";
+              } else if (data.message === "Login successful.") {
+                signInComplete.textContent = data.message;
+                errorMessage.textContent = "";
+                console.log(data);
+                window.location.href = "/";
+              } else {
+                signInComplete.textContent =
+                  data.message || "Login failed for unknown reason";
+                errorMessage.textContent = "";
+              }
             })
             .catch((error) => {
-              console.error("Error submitting login info:", error);
-              signInComplete.textContent = "An error occurred.";
+              console.error("Error entering login info:", error);
+              signInComplete.textContent = "";
+              errorMessage.textContent = "An error occurred.";
             });
         });
       </script>
