@@ -3,6 +3,7 @@ const app = express();
 const path = require("path");
 const bodyParser = require("body-parser");
 const authService = require("./services/auth.service.js");
+const extensionController = require("./controllers/extension.controllers.js");
 const session = require("express-session");
 const { connectDB } = require("./db.js");
 
@@ -18,6 +19,9 @@ app.use(
     cookie: { secure: false },
   })
 );
+
+// Use the extensionController for routes
+app.use("/", extensionController);
 
 connectDB().catch((error) => {
   console.log("Database connection failed!");
