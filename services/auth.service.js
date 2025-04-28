@@ -44,12 +44,13 @@ router.post("/register", async (req, res) => {
       }
     }
   }
+
   // Validate email
-  // if (validateEmail(email)) {
-  //   return res.status(400).json({
-  //     error: "Please provide a valid email.",
-  //   });
-  // }
+  if ((await validateEmail(email)) === false) {
+    return res.status(400).json({
+      error: "Please provide a valid email.",
+    });
+  }
 
   // Validate username
   if (
@@ -136,7 +137,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.delete("/logout", async (req, res) => {
+router.post("/logout", async (req, res) => {
   if (req.session) {
     req.session.destroy((e) => {
       if (e) {
@@ -167,9 +168,5 @@ async function sendNewUser(email, username, passHash, pool) {
 }
 
 async function validateEmail(email) {
-  // I understand that this isn't a full validaiton but it will work for our purposes.
-  if (email.match("/@/gm") === null && email.match("/./gm") === null) {
-    return false;
-  }
-  return true;
+  return email.includes("@") && email.includes(".");
 }

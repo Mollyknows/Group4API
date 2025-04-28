@@ -27,20 +27,23 @@ connectDB().catch((error) => {
   console.log("Database connection failed!");
 });
 
-// //middleware
-// app.use(bodyParser.json());
-// app.use("/api", apiRoutes);
-// app.use(express.json());
-
 // Front-end routes
 // Home page
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.render("index");
+});
+
+app.get("/api/auth/session", (req, res) => {
+  if (req.session.user) {
+    res.json({ isLoggedIn: true, user: req.session.user });
+  } else {
+    res.json({ isLoggedIn: false });
+  }
 });
 
 // Extensions gallery page
 app.get("/gallery", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "gallery.html"));
+  res.render("gallery.html");
 });
 
 // Extension detail page
