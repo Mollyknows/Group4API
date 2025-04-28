@@ -266,26 +266,37 @@ module.exports.sanitizeExtension = async (req, res) => {
   }
 };
 
+module.exports.getAllExtensions = async () => {
+  try {
+    const pool = await connectDB();
+
+    const query = `SELECT * FROM Extension`; // Replace "Extensions" with your actual table name
+    const queryResult = await pool.request().query(query);
+
+    return queryResult.recordset;
+  } catch (error) {
+    console.error("Error in getAllExtensions method:", error);
+    throw new Error("Failed to fetch all extensions");
+  }
+};
+
 // GET /Extension/searchExtensions/:searchQuery/:tags
 // Search for extensions based on a query and optional tags
-module.exports.searchExtensions = async (req, res) => {
+module.exports.searchExtensions = async (searchQuery) => {
   try {
-    const { searchQuery, tags } = req.params;
     
     const pool = await connectDB();
 
-    let query = `SELECT * FROM Extensions WHERE name LIKE '%${searchQuery}%' OR description LIKE '%${searchQuery}%'`
+    let query = `SELECT * FROM Extension WHERE name LIKE @searchQuery OR description LIKE @searchQuery`;
     
     const queryResult = await pool.request().input("searchQuery", sql.NVarChar, `%${searchQuery}%`).query(query);
 
-    return res.status(200).json({
+    return {
       success: true,
-      data: queryResult.recordset,
-    });
+      data: queryResult.recordset
+    };
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      error: "Failed to search extensions",
-    });
+    console.error("Error in searchExrensions method:", error);
+    throw new Error("Failed to search extensions");
   }
 };

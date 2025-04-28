@@ -3,7 +3,7 @@ async function handleSearch(event) {
 
     const userSearch = document.getElementById("searchtext").value.trim();
     if (!userSearch) {
-        alert("Please specify a search input.");
+        console.log("Please specify a search input.");
         return;
     }
 
@@ -31,6 +31,31 @@ async function handleSearch(event) {
         console.error("Error fetching data:", error);
     }
 }
+
+async function fetchAllExtensions() {
+    try {
+      const response = await fetch("/extensions", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch extensions");
+      }
+  
+      const data = await response.json();
+  
+      if (data.success) {
+        displayResults(data.data);
+      } else {
+        console.error("No extensions found");
+      }
+    } catch (error) {
+      console.error("Error fetching all extensions:", error);
+    }
+  }
 
 function displayResults(results) {
     const resultsContainer = document.getElementById("resultsContainer");
