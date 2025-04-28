@@ -1,7 +1,10 @@
 const express = require("express");
-router = express.Router();
+const multer = require("multer");
+const router = express.Router();
 
-const service = require("../services/extension.service");
+const extensionService = require("../services/extension.service");
+
+
 
 // // GET /repository/metadata
 // // Retrieves metadata from the repository
@@ -28,7 +31,25 @@ const service = require("../services/extension.service");
 //     const upload = await service.uploadExtension(req, res);
 //     res.post(upload);
 //   }
-// );
+// }
+
+// POST /extensions
+// Upload a new extension to the repository
+// User must be logged in to upload an extension
+router.post("/extensions", upload.single("file"), extensionService.uploadExtension),
+  async (req, res) => {
+    const upload = await service.uploadExtension(req, res);
+    res.post(upload);
+  };
+
+// GET /extensions/:id
+// Retrieve details of a specific extension from the repository
+router.get("/extensions/:id", async (req, res) => {
+  const { id } = req.params;
+  const extensionDetails = await service.getExtensionDetails(id);
+  res.get(extensionDetails);
+});
+
 
 // // GET /extensions/:id
 // // Retrieve details of a specific extension from the repository
@@ -55,6 +76,7 @@ const service = require("../services/extension.service");
 //   const deleteExtension = await service.deleteExtension(id);
 //   res.delete(deleteExtension);
 // });
+
 
 // // POST /extensions/:id/flags
 // // Flags an extension for review
@@ -120,6 +142,13 @@ router.get("/extensions", async (req, res) => {
       message: "Internal server error",
     });
   }
+
+// PUT /Extenstionsion/SanitizeExtension
+// Sanitize an extension to remove any malicious code
+router.put("/extensions/sanitize", async (req, res) => {
+  const sanitize = await service.sanitizeExtension(req.body);
+  res.put(sanitize);
+
 });
 
 // GET /Extension/searchExtensions/:searchQuery/:tags
