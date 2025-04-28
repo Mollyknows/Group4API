@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GIMP EXTENSION REPOSITORY</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="/ui-scripts/sessionHandler.js"></script>
     <script src="/ui-scripts/sidebar.js"></script>
   </head>
   <body>
@@ -52,14 +53,22 @@
         <div class="menu">
           <ul>
             <li>
-              <a href="#">
+              <a href="/index">
                 <span>Dashboard</span>
               </a>
             </li>
             <li>
-              <a href="#">
+              <a href="/search">
                 <span>Extension Registry</span>
               </a>
+            </li>
+            <li class="loggedOut">
+              <a href="/login">
+                <span>Login</span>
+              </a>
+            </li>
+            <li class="loggedIn">
+              <button onclick="fetch('/auth/logout')">Logout</button>
             </li>
           </ul>
         </div>
