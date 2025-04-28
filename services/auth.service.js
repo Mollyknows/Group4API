@@ -25,46 +25,68 @@ router.post("/register", async (req, res) => {
   let validationResult = await pool
     .request()
     .input("email", sql.NVarChar(255), email)
-    .input("username", sql.NVarChar(100), email)
+    .input("username", sql.NVarChar(100), username)
     .query(
       "select * from [dbo].[User] where email = @email OR username = @username"
     );
-  for (i in validationResult) {
-    if (
-      validationResult[i].email === email ||
-      validationResult[i].username === username
-    ) {
-      return res.status(400).json({
-        error:
-          "A user with that username or email already exists in our system.",
-      });
-    }
 
-    console.log("password before:", password);
-    // Validate password
-    if (
-      password.search(" ") != -1 ||
-      password.length < 4 ||
-      password.length > 20
-    ) {
-      return res.status(400).json({
-        error:
-          "Please provide a valid password. Valid passwords are greater than 3 characters, less than 20 characters, and contain no spaces.",
-      });
-    }
-    let passHash = "";
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      sendNewUser(email, username, hash, pool);
-      if (typeof err === Error) {
+  console.log(validationResult);
+  if (validationResult.recordset.length) {
+    for (let i = 0; i < validationResult.recordset.length; i++) {
+      if (
+        validationResult.recordset[i].email === email ||
+        validationResult.recordset[i].username === username
+      ) {
         return res.status(400).json({
-          error: "Something went wrong while securing passsword.",
+          error:
+            "A user with that username or email already exists in our system.",
         });
       }
-    });
-    return res.status(200).json({
-      message: "New account logged.",
+    }
+  }
+  // Validate email
+  // if (validateEmail(email)) {
+  //   return res.status(400).json({
+  //     error: "Please provide a valid email.",
+  //   });
+  // }
+
+  // Validate username
+  if (
+    username.search(" ") != -1 ||
+    username.length < 4 ||
+    username.length > 20
+  ) {
+    return res.status(400).json({
+      error:
+        "Please provide a valid username. Valid passwords are greater than 3 characters, less than 20 characters, and contain no spaces.",
     });
   }
+
+  // Validate password
+  if (
+    password.search(" ") != -1 ||
+    password.length < 4 ||
+    password.length > 20
+  ) {
+    return res.status(400).json({
+      error:
+        "Please provide a valid password. Valid passwords are greater than 3 characters, less than 20 characters, and contain no spaces.",
+    });
+  }
+  let passHash = "";
+  bcrypt.hash(password, saltRounds, (err, hash) => {
+    sendNewUser(email, username, hash, pool);
+
+    if (typeof err === Error) {
+      return res.status(400).json({
+        error: "Something went wrong while securing passsword.",
+      });
+    }
+    return res.status(201).json({
+      message: "New account logged.",
+    });
+  });
 });
 
 router.post("/login", async (req, res) => {
@@ -104,38 +126,31 @@ router.post("/login", async (req, res) => {
       username: user.username,
     };
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Login successful.",
       user: { id: user.userID, email: user.email, username: user.username },
     });
   } catch (e) {
     console.error("Login error:", e);
-    res.status(500).json({ e: "Failed to Login." });
+    return res.status(500).json({ e: "Failed to Login." });
   }
 });
 
-router.logout("/logout", async (req, res) => {
+router.delete("/logout", async (req, res) => {
   if (req.session) {
     req.session.destroy((e) => {
-      if (err) {
+      if (e) {
+        return res.status(400).json({
+          error: "there was an issue logging out",
+        });
       }
     });
   }
 });
-// module.exports.logoutUser = async (req, res) => {
-//   // Clear the session or token here
-//   req.session.destroy((err) => {
-//     if (err) {
-//       return res.status(500).json({ error: "Failed to log out." });
-//     }
-//     res.status(200).json({ message: "Logout successful." });
-//   });
-// };
 
 module.exports = router;
 
 async function sendNewUser(email, username, passHash, pool) {
-  console.log(passHash);
   try {
     await pool
       .request()
@@ -146,6 +161,15 @@ async function sendNewUser(email, username, passHash, pool) {
         "INSERT INTO [dbo].[User] (email, username, password) VALUES (@email,@username,@passHash)"
       );
   } catch (e) {
-    console.log(e);
+    console.error(e);
+    throw e;
   }
+}
+
+async function validateEmail(email) {
+  // I understand that this isn't a full validaiton but it will work for our purposes.
+  if (email.match("/@/gm") === null && email.match("/./gm") === null) {
+    return false;
+  }
+  return true;
 }

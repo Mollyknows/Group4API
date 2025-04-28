@@ -47,10 +47,11 @@
             })
               .then((response) => response.json())
               .then((data) => {
+                console.log(data);
                 if (data.error) {
                   errorMessage.textContent = data.error;
                   signInComplete.textContent = "";
-                } else if (data.message === "New account logged..") {
+                } else if (data.message === "New account logged.") {
                   signInComplete.textContent = data.message;
                   errorMessage.textContent = "";
                   console.log(data);
