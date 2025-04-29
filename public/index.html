@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GIMP EXTENSION REPOSITORY</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="/ui-scripts/sessionHandler.js"></script>
     <script src="/ui-scripts/sidebar.js"></script>
   </head>
   <body>
     <div class="header">
       <h1>GIMP EXTENSION REPOSITORY</h1>
+      <p class="username"></p>
       <div class="clearfix"></div>
       <div class="hamburger">
         <a href="javascript:void(0)" onclick="toggle()">
@@ -25,11 +25,13 @@
       <div class="content">
         <div class="profile">
           <div class="profile-image"></div>
-          <h1>Username</h1>
+          <h1 class="username">Username</h1>
+          <h1 class="loggedout">Please log in to manage your extensions.</h1>
         </div>
-        <div class="nav-tabs">
-          <a href="#" class="tab">Manage Downloads</a>
-        </div>
+        <div class="loggedin">
+          <div class="nav-tabs">
+            <a href="#" class="tab">Manage Downloads</a>
+          </div>
         <div class="profile">
           <p>These are your uploaded extensions:</p>
         </div>
@@ -53,18 +55,20 @@
                 <span>Extension Registry</span>
               </a>
             </li>
-            <li class="loggedOut">
+            <li class="loggedout">
               <a href="/login">
                 <span>Login</span>
               </a>
             </li>
-            <li class="loggedIn">
-              <button onclick="fetch('/auth/logout')">Logout</button>
+            <li class="loggedin">
+              <button onclick="logout()">Logout</button>
             </li>
           </ul>
         </div>
       </nav>
     </div>
+    <script src="/ui-scripts/sessionHandler.js"></script>
+    <script src="/ui-scripts/logout.js"></script>
   </body>
 
   <script src="ui-scripts/fetcher.js"></script>
