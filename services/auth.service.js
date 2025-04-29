@@ -125,6 +125,7 @@ router.post("/login", async (req, res) => {
       id: user.userID,
       email: user.email,
       username: user.username,
+      isLoggedIn: true,
     };
 
     return res.status(200).json({
