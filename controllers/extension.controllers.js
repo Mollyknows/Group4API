@@ -1,8 +1,8 @@
 const express = require("express");
 const multer = require("multer");
 const router = express.Router();
-
-const extensionService = require("../services/extension.service");
+const path = require('path');
+const fs = require('fs');
 
 
 
@@ -24,11 +24,18 @@ router.get("/repository/extensions/:id/:version", async (req, res) => {
 // POST /extensions
 // Upload a new extension to the repository
 // User must be logged in to upload an extension
-router.post("/extensions", upload.single("file"), extensionService.uploadExtension),
-  async (req, res) => {
-    const upload = await service.uploadExtension(req, res);
-    res.post(upload);
-  };
+const storeFile = (file) => {
+  const targetPath = path.join(__dirname, '../extensions', file.originalname);
+
+  return new Promise((resolve, reject) => {
+      fs.rename(file.path, targetPath, (err) => {
+          if (err) {
+              return reject(err);
+          }
+          resolve(targetPath);
+      });
+  });
+};
 
 // GET /extensions/:id
 // Retrieve details of a specific extension from the repository
@@ -41,7 +48,7 @@ router.get("/extensions/:id", async (req, res) => {
 // PUT /extensions/:id
 // Update an existing extension in the repository
 // User must be logged in to update an extension
-router.put("/extensions/:id", authenticateUser, async (req, res) => {
+router.put("/extensions/:id", async (req, res) => {
   const { id } = req.params;
   const update = await service.updateExtension(id, req.body);
   res.put(update);
@@ -50,7 +57,7 @@ router.put("/extensions/:id", authenticateUser, async (req, res) => {
 // DELETE /extensions/:id
 // Delete an extension from the repository
 // User must be logged in to delete an extension
-router.delete("/extensions/:id", authenticateUser, async (req, res) => {
+router.delete("/extensions/:id", async (req, res) => {
   const { id } = req.params;
   const deleteExtension = await service.deleteExtension(id);
   res.delete(deleteExtension);
@@ -79,4 +86,4 @@ router.get("/extensions/search/:searchQuery/:tags?", async (req, res) => {
   res.get(search);
 });
 
-module.exports = router;
+module.exports = {router, storeFile};

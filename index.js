@@ -1,10 +1,14 @@
 const express = require("express");
 const app = express();
+const multer = require('multer');
 const path = require("path");
+const fs = require('fs');
 const bodyParser = require("body-parser");
 const authService = require("./services/auth.service.js");
+const extensionService = require("./services/extension.service.js");
 const session = require("express-session");
 const { connectDB } = require("./db.js");
+const upload = multer({ dest: 'temp/' });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,14 +49,15 @@ app.get("/extension/:id", (req, res) => {
 });
 
 // Upload extension page (requires authentication)
-app.get("/upload", (req, res) => {
-  if (!req.session.user) {
-    return res.redirect("/login?redirect=/upload");
-  }
-  res.sendFile(path.join(__dirname, "public", "upload.html"));
+// Serve the HTML upload page
+app.get('/upload', (req, res) => {
+  res.sendFile(path.join(__dirname, 'upload.html'));
 });
 
-// Manage extensions page (requires authentication)
+// Handle file upload
+app.post('/upload', upload.single('file'), extensionService.uploadFile);
+
+// Manage extensions page
 app.get("/manage", (req, res) => {
   if (!req.session.user) {
     return res.redirect("/login?redirect=/manage");
@@ -60,6 +65,11 @@ app.get("/manage", (req, res) => {
 
   res.sendFile(path.join(__dirname, "public", "manage.html"));
 });
+
+const extensionsPath = path.join(__dirname, 'extensions');
+if (!fs.existsSync(extensionsPath)) {
+    fs.mkdirSync(extensionsPath);
+}
 
 // Login page
 app.get("/login", (req, res) => {
