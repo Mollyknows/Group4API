@@ -46,11 +46,11 @@ const extensionService = require("../services/extension.service");
 
 // GET /extensions/:id
 // Retrieve details of a specific extension from the repository
-router.get("/extensions/:id", async (req, res) => {
-  const { id } = req.params;
-  const extensionDetails = await service.getExtensionDetails(id);
-  res.get(extensionDetails);
-});
+// router.get("/extensions/:id", async (req, res) => {
+//   const { id } = req.params;
+//   const extensionDetails = await service.getExtensionDetails(id);
+//   res.get(extensionDetails);
+// });
 
 // // GET /extensions/:id
 // // Retrieve details of a specific extension from the repository
