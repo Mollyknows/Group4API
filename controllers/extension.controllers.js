@@ -167,4 +167,18 @@ router.get("/extensions/search/:searchQuery", async (req, res) => {
   }
 });
 
+router.get("/extensions/:userID", async (req, res) => {
+  try {
+    const { userID } = req.params;
+    const userExtensionFetch = await extensionService.getUsersExtensions(userID);
+    res.status(200).json(userExtensionFetch);
+  } catch (error) {
+    console.error("Error in /extensions/userID:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
 module.exports = router;

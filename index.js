@@ -35,6 +35,7 @@ app.get("/", (req, res) => {
 
 app.get("/api/auth/session", (req, res) => {
   if (req.session.user) {
+    console.log("User is logged in:", req.session.user);
     res.json({ isLoggedIn: true, user: req.session.user });
   } else {
     res.json({ isLoggedIn: false });

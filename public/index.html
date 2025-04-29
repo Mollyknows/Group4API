@@ -29,21 +29,12 @@
         </div>
         <div class="nav-tabs">
           <a href="#" class="tab">Manage Downloads</a>
-          <a href="#" class="tab">Manage Uploads</a>
+        </div>
+        <div class="profile">
+          <p>These are your uploaded extensions:</p>
         </div>
         <!-- Your Extension Area-->
-        <div class="extension-item">
-          <div class="extension-icon"></div>
-          <div class="extension-info">
-            <h2 class="extension-title">Your Extension</h2>
-            <p class="extension-meta">Author: Username</p>
-            <p class="extension-meta">Version: 1.0</p>
-          </div>
-          <div class="extension-actions">
-            <button class="btn btn-upload">Upload Update</button>
-            <button class="btn btn-edit">Edit Extension Info</button>
-            <button class="btn btn-remove">Remove</button>
-          </div>
+        <div id="resultsContainer">
         </div>
       </div>
     </main>
@@ -74,6 +65,10 @@
         </div>
       </nav>
     </div>
-    <scri
   </body>
+
+  <script src="ui-scripts/fetcher.js"></script>
+  <script>
+    window.onload = getUsersUploadedExtensions;
+  </script>
 </html>

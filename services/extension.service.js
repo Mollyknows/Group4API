@@ -327,3 +327,24 @@ module.exports.searchExtensions = async (searchQuery) => {
     throw new Error("Failed to search extensions");
   }
 };
+
+module.exports.getUsersExtensions = async (userID) => {
+  try {
+    const pool = await connectDB();
+
+    let query = `SELECT * FROM Extension WHERE creator = @userID`;
+
+    const queryResult = await pool
+      .request()
+      .input("userID", sql.Int, userID)
+      .query(query);
+
+    return {
+      success: true,
+      data: queryResult.recordset,
+    };
+  } catch (error) {
+    console.error("Error in searchExrensions method:", error);
+    throw new Error("Failed to search extensions");
+  }
+};
